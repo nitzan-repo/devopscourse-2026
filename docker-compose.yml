@@ -1,0 +1,31 @@
+
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: drupal_db
+      POSTGRES_USER: drupal_user
+      POSTGRES_PASSWORD: password123
+    networks:
+      - drupal
+
+  drupal:
+    image: drupal:10-php8.1-apache 
+    ports:
+      - "9090:80"
+    environment:
+      DRUPAL_DB_HOST: postgres
+    networks:
+      - drupal
+
+networks:
+  drupal:
+    driver: bridge
+
+
+
+
+
+   
