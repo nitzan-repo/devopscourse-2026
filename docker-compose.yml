@@ -1,53 +1,31 @@
-version: '3.8'
+
+version: "3.8"
 
 services:
-
-  postgres_db:
+  postgres:
     image: postgres:15-alpine
-    container_name: drupal_postgres
     environment:
       POSTGRES_DB: drupal_db
       POSTGRES_USER: drupal_user
-      POSTGRES_PASSWORD: secret_password
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+      POSTGRES_PASSWORD: password123
     networks:
-      - drupal_network
-    restart: always
+      - drupal
 
-
-  drupal_cms:
-    image: drupal:10-php8.1-apache  
-    container_name: drupal_site
+  drupal:
+    image: drupal:10-php8.1-apache 
     ports:
       - "9090:80"
     environment:
-
-      DRUPAL_DB_HOST: postgres_db
-      DRUPAL_DB_NAME: drupal_db
-      DRUPAL_DB_USER: drupal_user
-      DRUPAL_DB_PASSWORD: secret_password
-    volumes:
-      - drupal_modules:/var/www/html/modules
-      - drupal_profiles:/var/www/html/profiles
-      - drupal_themes:/var/www/html/themes
-      - drupal_sites:/var/www/html/sites
+      DRUPAL_DB_HOST: postgres
     networks:
-      - drupal_network
-    depends_on:
-      - postgres_db
-    restart: always
-
+      - drupal
 
 networks:
-  drupal_network:
+  drupal:
     driver: bridge
-    name: drupal
 
 
-volumes:
-  postgres_data:
-  drupal_modules:
-  drupal_profiles:
-  drupal_themes:
-  drupal_sites:
+
+
+
+   
